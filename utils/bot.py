@@ -14,6 +14,16 @@ class Orion(commands.Bot):
             intents=discord.Intents.all()
         )
     
+    async def load_cogs(self):
+        cogs = os.listdir("cogs")
+        for file in cogs:
+            if file.endswith(".py"):
+                await self.load_extension("cogs."+file[:-3])
+                self.logger.info(f"Loaded {file[:-3]}")
+    
+    async def setup_hook(self):
+        await self.load_cogs()
+    
     async def on_ready(self):
         self.logger.info(f"Logged in as: {self.user.name}")
 
